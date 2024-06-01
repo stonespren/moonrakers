@@ -38,6 +38,7 @@
     "src",
     ".eslintrc.cjs",
     "prettier.config.js",
+    "postcss.config.cjs",
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
