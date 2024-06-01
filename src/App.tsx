@@ -1,13 +1,29 @@
-import { ModeToggle } from "./components/mode-toggle";
-import { ThemeProvider } from "./components/theme-provider";
+import {
+  ErrorComponent,
+  NotFoundRoute,
+  RouterProvider,
+  createRouter,
+} from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
+import { Route as rootRoute } from "./routes/__root";
+
+const notFoundRoute = new NotFoundRoute({
+  getParentRoute: () => rootRoute,
+  component: () => <h1>404 Not Found</h1>,
+});
+
+const router = createRouter({
+  routeTree,
+  notFoundRoute,
+  defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+});
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
 
 export default function App() {
-  return (
-    <ThemeProvider defaultTheme="dark" storageKey="ui-theme">
-      <main className="flex h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
-        <h1 className="text-center text-9xl underline">Moonrakers</h1>
-        <ModeToggle />
-      </main>
-    </ThemeProvider>
-  );
+  return <RouterProvider router={router} />;
 }
