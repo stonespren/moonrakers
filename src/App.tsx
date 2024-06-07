@@ -1,20 +1,24 @@
 import {
   ErrorComponent,
-  NotFoundRoute,
   RouterProvider,
   createRouter,
 } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
-import { Route as rootRoute } from "./routes/__root";
-
-const notFoundRoute = new NotFoundRoute({
-  getParentRoute: () => rootRoute,
-  component: () => <h1>404 Not Found</h1>,
-});
+import { Link } from "@tanstack/react-router";
+import { P } from "./components/ui/text";
+import { Button } from "./components/ui/button";
 
 const router = createRouter({
   routeTree,
-  notFoundRoute,
+  notFoundMode: "root",
+  defaultNotFoundComponent: () => (
+    <div className="flex flex-col items-center justify-center gap-10">
+      <P>Uh-oh, that page was not found!</P>
+      <Button asChild>
+        <Link to="/">Go home</Link>
+      </Button>
+    </div>
+  ),
   defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
 });
 
